@@ -2,7 +2,9 @@
 pragma solidity ^0.8.18;
 
 contract ProposalContract_byEmreBulut {
-   
+    // ****************** Data ***********************
+
+    //Owner
     address owner;
 
     uint256 private counter;
@@ -84,21 +86,29 @@ contract ProposalContract_byEmreBulut {
     }
 
 
-    function calculateCurrentState() private view returns(bool) {
+  function calculateCurrentState() private view returns(bool) {
         Proposal storage proposal = proposal_history[counter];
 
         uint256 approve = proposal.approve;
         uint256 reject = proposal.reject;
         uint256 pass = proposal.pass;
+        uint256 decisiveVote = (proposal.approve + proposal.reject);
         
         //The number of "approve" votes must be greater than the number of "reject" votes
         //and the "pass" count must be less than or equal to 50% of the total votes cast.
-        if ((approve > reject) && (pass <= (approve + reject +pass) /2 )) {
+        //Implemented decisiveVote is for sum of approve and reject votes.
+        if ((proposal.approve + proposal.reject)%2 == 1){
+            (decisiveVote) += 1;
+        }
+        (decisiveVote) =  (decisiveVote)/2;
+
+        if ((approve > reject) && (pass <= decisiveVote)) {
             return true;
         } else {
             return false;
         }
     }
+
 
 
     // ****************** Query Functions ***********************
