@@ -2,9 +2,7 @@
 pragma solidity ^0.8.18;
 
 contract ProposalContract_byEmreBulut {
-    // ****************** Data ***********************
-
-    //Owner
+   
     address owner;
 
     uint256 private counter;
